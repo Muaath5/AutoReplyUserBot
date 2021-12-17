@@ -12,6 +12,9 @@ namespace AutoReplyUserBot
         public static readonly UpdatesHandler AppUpdatesHandler = new();
         public static Client App = null;
 
+        public static User Me = null;
+        public static string TDLibVersion = "unknown";
+        public static DateTime AuthorizationDate;
 
         public static Dictionary<string, FormattedText> AutoReplies = new Dictionary<string, FormattedText>();
         public static string State = "none";

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
-    <Version>0.3</Version>
+    <Version>1.1.0</Version>
     <Authors>Muaath Alqarni</Authors>
     <Platforms>AnyCPU;x86;x64</Platforms>
     <SignAssembly>false</SignAssembly>
@@ -15,11 +15,11 @@
     <RepositoryUrl>https://github.com/Muaath5/AutoReplyUserBot</RepositoryUrl>
     <PackageReleaseNotes>- Added more commands
 - Updated to TDLib 1.7.10
-</PackageReleaseNotes>
+- Improved /state command output</PackageReleaseNotes>
     <PackageTags>bot;userbot;telegram;tdlib;automation</PackageTags>
     <PackageProjectUrl>https://github.com/Muaath5/AutoReplyUserBot</PackageProjectUrl>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.0.0</FileVersion>
+    <AssemblyVersion>1.1.0.0</AssemblyVersion>
+    <FileVersion>1.1.0.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -48,20 +48,26 @@
 
   <ItemGroup Condition="'$(Platform)'=='x86'">
     <Reference Include="Telegram.Td">
-      <HintPath>..\TDLibBinaries\c#\v1.7.10\windows\bin-x86\release\Telegram.Td.dll</HintPath>
+      <HintPath>..\TDLibBinaries\c#\windows\v1.7.10\x86\release\Telegram.Td.dll</HintPath>
     </Reference>
   </ItemGroup>
 
 	<ItemGroup Condition="'$(Platform)'=='x64'">
     <Reference Include="Telegram.Td">
-      <HintPath>..\TDLibBinaries\c#\v1.7.10\windows\bin-x64\release\Telegram.Td.dll</HintPath>
+      <HintPath>..\TDLibBinaries\c#\windows\v1.7.10\x64\release\Telegram.Td.dll</HintPath>
     </Reference>
   </ItemGroup>
 
   <ItemGroup Condition="'$(Platform)'=='AnyCPU'">
     <Reference Include="Telegram.Td">
-      <HintPath>..\TDLibBinaries\c#\v1.7.10\windows\bin-x86\release\Telegram.Td.dll</HintPath>
+      <HintPath>..\TDLibBinaries\c#\windows\v1.7.10\x86\release\Telegram.Td.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Properties\**" />
+    <EmbeddedResource Remove="Properties\**" />
+    <None Remove="Properties\**" />
   </ItemGroup>
 
   <ItemGroup>

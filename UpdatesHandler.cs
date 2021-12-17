@@ -54,14 +54,16 @@ namespace AutoReplyUserBot
             else if (@object is UpdateOption updOpt)
             {
                 Console.ForegroundColor = ConsoleColor.Gray;
-                if (updOpt.Name == "version" && AppOptions.TDLibVersion)
+                if (updOpt.Name == "version")
                 {
-                    Console.WriteLine($"TDLib Version: {(updOpt.Value as OptionValueString).Value}");
+                    Program.TDLibVersion = (updOpt.Value as OptionValueString).Value;
+                    if (AppOptions.TDLibVersion)
+                        Console.WriteLine($"TDLib Version: {Program.TDLibVersion}");
                 }
-                else if (updOpt.Name == "version" && AppOptions.AllowOutput && false)
-                {
-                    Console.WriteLine($"TDLib Version: {(updOpt.Value as OptionValueString).Value}");
-                }
+                //else if (updOpt.Name == "version" && AppOptions.AllowOutput && false)
+                //{
+                //    Console.WriteLine($"TDLib Version: {(updOpt.Value as OptionValueString).Value}");
+                //}
                 Console.ResetColor();
             }
             else
@@ -176,15 +178,20 @@ namespace AutoReplyUserBot
                         Console.WriteLine("Authinticated!");
                         Console.ForegroundColor = ConsoleColor.Cyan;
                         Console.WriteLine($"Hi, {me.FirstName}. your ID is {me.Id} :)");
+                        Program.Me = me;
+
+                        // Converting unix-timestmap
+                        var authDate = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+                        BaseObject authDateOpt = await Program.App.SendAsync(new GetOption("authorization_date"));
+                        long unixAuthDate = (authDateOpt as OptionValueInteger).Value;
+                        Program.AuthorizationDate = authDate.AddSeconds(unixAuthDate).ToLocalTime();
+#if DEBUG
+                        Console.WriteLine("Auth Date: " + unixAuthDate);
+#endif
+
                         Console.ResetColor();
                     }
                     Thread.Sleep(1000);
-
-#if DEBUG
-                    Console.WriteLine("Getting chats (Testing only)");
-                    var chats = await Program.App.SendAsync(new LoadChats(new ChatListMain(), 600));
-                    Console.WriteLine($"Chats: {chats}");
-#endif
                 }
                 else if (authState is AuthorizationStateLoggingOut)
                 {
@@ -260,10 +267,14 @@ namespace AutoReplyUserBot
                         else if (txt == "/state")
                         {
                             botReply = @$"<b>Auto-reply userbot info:</b>
-Auto-replies count: {Program.AutoReplies.Count}
+User ID: <code>{Program.Me.Id}</code>
+TDLib Version: <code>{Program.TDLibVersion}</code>
+Auth date: <code>{Program.AuthorizationDate.ToString("yyyy/M/d t h:m:s")}</code>
 Run time: <code>{Program.RunTime}</code>
+Auto-replies count: {Program.AutoReplies.Count}
 Auto-reply signature: <i>{(AppOptions.UseAutoReplySigniture ? AppOptions.AutoReplySignitureText : "")}</i>
 Auto-reply state: <code>{Program.State}</code>";
+                            Program.State = "state_sent";
                         }
                         else if (txt == "/signature")
                         {
@@ -305,7 +316,7 @@ Auto-reply state: <code>{Program.State}</code>";
                     {
                         if (Program.AutoReplies.ContainsKey(text.Text.Text))
                         {
-                            botReply = "This key is already in replies!";
+                            botReply = "This command is already in replies!";
                         }
                         else
                         {
