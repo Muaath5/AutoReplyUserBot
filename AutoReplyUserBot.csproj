@@ -1,0 +1,71 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+    <Version>0.3</Version>
+    <Authors>Muaath Alqarni</Authors>
+    <Platforms>AnyCPU;x86;x64</Platforms>
+    <SignAssembly>false</SignAssembly>
+    <StartupObject>AutoReplyUserBot.Program</StartupObject>
+    <Description>Telegram Userbot for Auto-repling!</Description>
+    <Product>Auto-Reply UserBot</Product>
+    <NeutralLanguage>en</NeutralLanguage>
+    <RepositoryType>public</RepositoryType>
+    <RepositoryUrl>https://github.com/Muaath5/AutoReplyUserBot</RepositoryUrl>
+    <PackageReleaseNotes>- Added more commands
+- Updated to TDLib 1.7.10
+</PackageReleaseNotes>
+    <PackageTags>bot;userbot;telegram;tdlib;automation</PackageTags>
+    <PackageProjectUrl>https://github.com/Muaath5/AutoReplyUserBot</PackageProjectUrl>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>DEBUG;TRACE;ANY_CPU</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <DefineConstants>DEBUG;TRACE;X86</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <DefineConstants>DEBUG;TRACE;X64</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE;ANY_CPU</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <DefineConstants>TRACE;X86</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <DefineConstants>TRACE;X64</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(Platform)'=='x86'">
+    <Reference Include="Telegram.Td">
+      <HintPath>..\TDLibBinaries\c#\v1.7.10\windows\bin-x86\release\Telegram.Td.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+	<ItemGroup Condition="'$(Platform)'=='x64'">
+    <Reference Include="Telegram.Td">
+      <HintPath>..\TDLibBinaries\c#\v1.7.10\windows\bin-x64\release\Telegram.Td.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(Platform)'=='AnyCPU'">
+    <Reference Include="Telegram.Td">
+      <HintPath>..\TDLibBinaries\c#\v1.7.10\windows\bin-x86\release\Telegram.Td.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="bin\" />
+  </ItemGroup>
+
+</Project>
