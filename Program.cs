@@ -177,7 +177,7 @@ namespace AutoReplyUserBot
                                 }
                                 else if (consoleInputOpt == "API_HASH" || consoleInputOpt == "TELEGRAM_API_HASH")
                                 {
-                                    AppOptions.API_HASH = currentOpt;
+                                    AppOptions.API_HASH = currentOpt.ToLower();
                                 }
                                 else if (consoleInputOpt == "LOG_LEVEL")
                                 {
