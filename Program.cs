@@ -248,7 +248,7 @@ namespace AutoReplyUserBot
             Console.ForegroundColor = ConsoleColor.Cyan;
             string cmdline = Console.ReadLine();
             Console.ResetColor();
-
+            if (string.IsNullOrWhiteSpace(cmdline)) Environment.Exit(0);
             string[] cmds = cmdline.Split(' ');
             string cmd = cmds[0];
             switch (cmd.ToLower())
