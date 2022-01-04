@@ -139,7 +139,7 @@ namespace AutoReplyUserBot
                         type = "Call";
                         length = call.Length.ToString();
                     }
-                    Console.WriteLine($"An authintication code received by {type}");
+                    Console.WriteLine($"An authentication code received by {type}");
                     Console.Write($"Enter code (Length: {length}): ");
                     await Program.App.SendAsync(new CheckAuthenticationCode(Console.ReadLine()));
                 }
@@ -175,7 +175,7 @@ namespace AutoReplyUserBot
                     if (AppOptions.AuthenticatedMessage)
                     {
                         Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine("Authinticated!");
+                        Console.WriteLine("Authenticated!");
                         Console.ForegroundColor = ConsoleColor.Cyan;
                         Console.WriteLine($"Hi, {me.FirstName}. your ID is {me.Id} :)");
                         Program.Me = me;
