@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
-    <Version>1.1.0</Version>
+    <Version>2.0.0</Version>
     <Authors>Muaath Alqarni</Authors>
     <Platforms>AnyCPU;x86;x64</Platforms>
     <SignAssembly>false</SignAssembly>
@@ -13,13 +13,19 @@
     <NeutralLanguage>en</NeutralLanguage>
     <RepositoryType>public</RepositoryType>
     <RepositoryUrl>https://github.com/Muaath5/AutoReplyUserBot</RepositoryUrl>
-    <PackageReleaseNotes>- Added more commands
-- Updated to TDLib 1.8.0</PackageReleaseNotes>
+    <PackageReleaseNotes>- Improving code style</PackageReleaseNotes>
     <PackageTags>bot;userbot;telegram;tdlib;automation</PackageTags>
     <PackageProjectUrl>https://github.com/Muaath5/AutoReplyUserBot</PackageProjectUrl>
-    <AssemblyVersion>1.1.0.0</AssemblyVersion>
-    <FileVersion>1.1.0.0</FileVersion>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <FileVersion>2.0.0.0</FileVersion>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="bin\**" />
+    <EmbeddedResource Remove="bin\**" />
+    <None Remove="bin\**" />
+  </ItemGroup>
   <ItemGroup>
     <Reference Include="Telegram.Td">
       <SpecificVersion>False</SpecificVersion>

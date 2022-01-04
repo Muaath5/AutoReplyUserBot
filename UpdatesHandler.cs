@@ -18,7 +18,7 @@ namespace AutoReplyUserBot
             {
                 await OnMessage(updMessage.Message);
             }
-            else if (@object is UpdateConnectionState updConnState && AppOptions.ConnectionStateUpdates)
+            else if (@object is UpdateConnectionState updConnState && AppData.ConnectionStateUpdates)
             {
                 if (updConnState.State is ConnectionStateReady)
                 {
@@ -57,7 +57,7 @@ namespace AutoReplyUserBot
                 if (updOpt.Name == "version")
                 {
                     Program.TDLibVersion = (updOpt.Value as OptionValueString).Value;
-                    if (AppOptions.TDLibVersion)
+                    if (AppData.TDLibVersion)
                         Console.WriteLine($"TDLib Version: {Program.TDLibVersion}");
                 }
                 //else if (updOpt.Name == "version" && AppOptions.AllowOutput && false)
@@ -79,20 +79,20 @@ namespace AutoReplyUserBot
                 if (authState is AuthorizationStateWaitTdlibParameters)
                 {
                     await Program.App.SendAsync(new SetTdlibParameters(new TdlibParameters(
-                        AppOptions.UseTestDc,
+                        TDLibData.UseTestDc,
                         "AutoReplyUserBotDB",
                         "AutoReplyUserBotFiles",
-                        AppOptions.UseFilesDB,
-                        AppOptions.UseChatsDB,
-                        AppOptions.UseMessagesDB,
-                        AppOptions.UseSecretChats,
-                        AppOptions.API_ID,
-                        AppOptions.API_HASH,
-                        AppOptions.SystemLanguage,
-                        AppOptions.DeviceModel,
-                        AppOptions.OSVersion,
-                        AppOptions.Version,
-                        true,
+                        TDLibData.UseFilesDB,
+                        TDLibData.UseChatsDB,
+                        TDLibData.UseMessagesDB,
+                        TDLibData.UseSecretChats,
+                        TDLibData.API_ID,
+                        TDLibData.API_HASH,
+                        Helper.GetSystemLanguage(),
+                        Helper.GetDeviceModel(),
+                        Helper.GetOSVersion(),
+                        Helper.GetAppVersion(),
+                        TDLibData.EnableStorageOptimizer,
                         true
                     )));
                 }
@@ -172,7 +172,7 @@ namespace AutoReplyUserBot
                 else if (authState is AuthorizationStateReady)
                 {
                     var me = await Program.App.SendAsync(new GetMe()) as User;
-                    if (AppOptions.AuthenticatedMessage)
+                    if (AppData.AuthenticatedMessage)
                     {
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine("Authinticated!");
@@ -267,13 +267,15 @@ namespace AutoReplyUserBot
                         else if (txt == "/state")
                         {
                             botReply = @$"<b>Auto-reply userbot info:</b>
-User ID: <code>{Program.Me.Id}</code>
-TDLib Version: <code>{Program.TDLibVersion}</code>
+Userbot version: <code>v{Helper.GetAppVersion()}</code>
+Your ID: <code>{Program.Me.Id}</code>
+TDLib version: <code>{Program.TDLibVersion}</code>
 Auth date: <code>{Program.AuthorizationDate.ToString("yyyy/M/d t h:m:s")}</code>
 Run time: <code>{Program.RunTime}</code>
 Auto-replies count: {Program.AutoReplies.Count}
-Auto-reply signature: <i>{(AppOptions.UseAutoReplySigniture ? AppOptions.AutoReplySignitureText : "")}</i>
-Auto-reply state: <code>{Program.State}</code>";
+Auto-reply signature: <i>{(AppData.UseAutoReplySigniture ? AppData.AutoReplySignitureText : "")}</i>
+Auto-reply state: <code>{Program.State}</code>
+Only in private chats: <code>{AppData.OnlyInPrivateChats}</code>";
                             Program.State = "state_sent";
                         }
                         else if (txt == "/signature")
@@ -289,13 +291,13 @@ Auto-reply state: <code>{Program.State}</code>";
                         }
                         else if (txt == "/allow_reply_when_online")
                         {
-                            AppOptions.ReplyWhenOnline = true;
+                            AppData.ReplyWhenOnline = true;
                             Program.State = "allowed_reply_when_online";
                             botReply = "Now the userbot <b>will reply</b> even if you are online";
                         }
                         else if (txt == "/disallow_reply_when_online")
                         {
-                            AppOptions.ReplyWhenOnline = false;
+                            AppData.ReplyWhenOnline = false;
                             Program.State = "disallowed_reply_when_online";
                             botReply = "Now the userbot <b>won't</b> reply even if you are online";
                         }
@@ -335,13 +337,13 @@ Auto-reply state: <code>{Program.State}</code>";
                     {
                         if (txt == "false" || txt == "no" || txt == "disable")
                         {
-                            AppOptions.UseAutoReplySigniture = false;
+                            AppData.UseAutoReplySigniture = false;
                             botReply = "Auto-reply signature was disabled!";
                         }
                         else
                         {
-                            AppOptions.AutoReplySignitureText = txt;
-                            AppOptions.UseAutoReplySigniture = true;
+                            AppData.AutoReplySignitureText = txt;
+                            AppData.UseAutoReplySigniture = true;
                             botReply = "Auto-reply signature was enabled!";
                         }
                         Program.State = "signature_edited";
@@ -362,7 +364,7 @@ Auto-reply state: <code>{Program.State}</code>";
                         Program.LastMessageID = lastMsg.Id;
                     }
                 }
-                else if (!(me.Status is UserStatusOnline) || !AppOptions.ReplyWhenOnline && message.ChatId != me.Id)
+                else if (!(me.Status is UserStatusOnline) || !AppData.ReplyWhenOnline && message.ChatId != me.Id)
                 {
                     Chat chat = await Program.App.SendAsync(new GetChat(message.ChatId)) as Chat;
 
@@ -374,7 +376,7 @@ Auto-reply state: <code>{Program.State}</code>";
                             if (text.Text.Text.Contains(reply.Key))
                             {
                                 FormattedText editedReply = reply.Value;
-                                editedReply.Text += (AppOptions.UseAutoReplySigniture ? "\n\n" + AppOptions.AutoReplySignitureText : "");
+                                editedReply.Text += (AppData.UseAutoReplySigniture ? "\n\n" + AppData.AutoReplySignitureText : "");
                                 await Program.App.SendAsync(
                                     new SendMessage(
                                         message.ChatId,

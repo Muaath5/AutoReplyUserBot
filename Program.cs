@@ -56,20 +56,20 @@ namespace AutoReplyUserBot
                 return;
             }
 
-            if (AppOptions.AllowOutput)
+            if (AppData.AllowOutput)
             {
                 Console.WriteLine("Auto-reply userbot!");
             }
 
-            Client.Execute(new SetLogStream(new LogStreamFile(AppOptions.LogsFilePath, long.MaxValue, false)));
-            Client.Execute(new SetLogVerbosityLevel(AppOptions.LogLevel));
-            if (AppOptions.AllowOutput)
+            Client.Execute(new SetLogStream(new LogStreamFile(TDLibData.LogsFilePath, long.MaxValue, false)));
+            Client.Execute(new SetLogVerbosityLevel(TDLibData.LogLevel));
+            if (AppData.AllowOutput)
             {
-                Console.WriteLine($"Log level: {AppOptions.LogLevel}");
-                Console.WriteLine($"Logs saved in {AppOptions.LogsFilePath}");
+                Console.WriteLine($"Log level: {TDLibData.LogLevel}");
+                Console.WriteLine($"Logs saved in {TDLibData.LogsFilePath}");
             }
 
-            if (AppOptions.AllowCommands)
+            if (AppData.AllowCommands)
             {
                 Console.CancelKeyPress += Console_CancelKeyPress;
             }
@@ -90,7 +90,7 @@ namespace AutoReplyUserBot
             {
                 if (int.TryParse(api_id_env, out int api_id))
                 {
-                    AppOptions.API_ID = api_id;
+                    TDLibData.API_ID = api_id;
                 }
                 else
                 {
@@ -103,7 +103,7 @@ namespace AutoReplyUserBot
             string api_hash = Environment.GetEnvironmentVariable("TELEGRAM_API_HASH");
             if (api_hash != null)
             {
-                AppOptions.API_HASH = api_hash;
+                TDLibData.API_HASH = api_hash;
             }
         }
 
@@ -118,34 +118,34 @@ namespace AutoReplyUserBot
                 switch (currentOpt)
                 {
                     case "DISABLE_COMMANDS":
-                        AppOptions.AllowCommands = false;
+                        AppData.AllowCommands = false;
                         break;
 
                     case "DISABLE_OUTPUT":
-                        AppOptions.AllowOutput = false;
+                        AppData.AllowOutput = false;
                         break;
 
                     case "NO_LOGS":
                         Console.WriteLine("Note: Logs will contains ONLY Fatal errors!");
-                        AppOptions.LogLevel = 0;
+                        TDLibData.LogLevel = 0;
                         break;
 
                     case "DB_ALL":
-                        AppOptions.UseChatsDB = true;
-                        AppOptions.UseFilesDB = true;
-                        AppOptions.UseMessagesDB = true;
+                        TDLibData.UseChatsDB = true;
+                        TDLibData.UseFilesDB = true;
+                        TDLibData.UseMessagesDB = true;
                         break;
 
                     case "REPLY_WHEN_ONLINE":
-                        AppOptions.ReplyWhenOnline = true;
+                        AppData.ReplyWhenOnline = true;
                         break;
 
                     case "NO_AUTO_REPLY_SIGNITURE":
-                        AppOptions.UseAutoReplySigniture = false;
+                        AppData.UseAutoReplySigniture = false;
                         break;
 
                     case "TEST_DC":
-                        AppOptions.UseTestDc = true;
+                        TDLibData.UseTestDc = true;
                         break;
 
                     case "API_ID":
@@ -172,12 +172,12 @@ namespace AutoReplyUserBot
                                     }
                                     else
                                     {
-                                        AppOptions.API_ID = api_id;
+                                        TDLibData.API_ID = api_id;
                                     }
                                 }
                                 else if (consoleInputOpt == "API_HASH" || consoleInputOpt == "TELEGRAM_API_HASH")
                                 {
-                                    AppOptions.API_HASH = currentOpt.ToLower();
+                                    TDLibData.API_HASH = currentOpt.ToLower();
                                 }
                                 else if (consoleInputOpt == "LOG_LEVEL")
                                 {
@@ -188,7 +188,7 @@ namespace AutoReplyUserBot
                                     }
                                     else
                                     {
-                                        AppOptions.LogLevel = logLevel;
+                                        TDLibData.LogLevel = logLevel;
                                     }
                                 }
                                 else if (currentOpt.StartsWith('"'))
@@ -207,7 +207,7 @@ namespace AutoReplyUserBot
 
                                     if (consoleInputOpt == "NEW_AUTO_REPLY_SIGNITURE")
                                     {
-                                        AppOptions.AutoReplySignitureText = currentInputText;
+                                        AppData.AutoReplySignitureText = currentInputText;
                                     }
 
                                     currentInputText = "";
@@ -227,7 +227,7 @@ namespace AutoReplyUserBot
             }
 
             // To make all info compitible
-            AppOptions.Refresh();
+            AppData.Refresh();
 
             return true;
         }
@@ -265,7 +265,7 @@ namespace AutoReplyUserBot
                     return;
 
                 case "info":
-                    App.Send(new GetMe(), new MyInfoUpdatesHandler());
+                    App.Send(new GetMe(), new UserUpdateHandler());
                     goto EnterCmd;
 
                 case "config":
@@ -279,6 +279,19 @@ namespace AutoReplyUserBot
                     Thread.Sleep(600);
                     goto EnterCmd;
 
+                case "tdlib_version":
+                case "tdlib":
+                case "tdlib_ver":
+                    Console.WriteLine($"TDLib version: {TDLibVersion}");
+                    break;
+
+                case "version":
+                case "v":
+                case "ver":
+                    Console.WriteLine($"AutoReplyUserBot version: {Helper.GetAppVersion()}");
+                    break;
+
+                case "":
                 case "\n":
                     Exit = true;
                     break;

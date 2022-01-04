@@ -12,16 +12,12 @@ At last send the reply.
 ## Building
 ### Prerequist
 1. Git
-2. Visual Studio 2019 (With C#)
-3. Built TDLib for Architicture you'll use TDLib there. You may can find built TDLib binaries [here](https://github.com/Muaath5/TDLibBinaries)
+2. Visual Studio (2019 is suggested) (With C#)
 
 ### Steps
-1. Download via `git clone ...`
-2. Open in Visual Studio
-3. Running the application (You'll get an error, No problem)
-4. Edit on `AutoReplyUserBot.csporj` and add path of dependenecies there
-5. Run the application again, It'll run! **Enjoy!**
-
+1. Open in Visual Studio and clone the repo
+2. Running `git clone https://github.com/Muaath5/TDLibBinaries.git` in a folder next to this repo's folder
+3. Run the application
 
 ## Running the app
 At first, You should set `TELEGRAM_API_ID` and `TELEGRAM_API_HASH` environment variables, Unless you'll get an error.
@@ -63,10 +59,13 @@ These commands can be used only in **Saved Messages**
 - `/signature`: Edit/Disable messages signature
 - `/disallow_reply_when_online`: Disallow userbot to reply when user is online
 - `/allow_reply_when_online`: Allow userbot to reply when user is online
+- `/enable_groups`: Allows auto-reply in groups
+- `/disable_groups`: Disables auto-reply in groups
 
 ## TODO List:
 - [x] Creating a repository contains built result of TDLib, And remove it from here.
 - [x] Adding ability to set API_ID & API_HASH in console without environment variable.
+- [ ] Adding more options for auto-reply filtering
 
 ## Licence
 GPL 3.0
